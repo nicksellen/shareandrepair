@@ -1,0 +1,109 @@
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+#info {
+  display: none;
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #dfd;
+}
+#controls {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: #ddd;
+  display: flex;
+}
+
+#controls form {
+  flex-grow: 1;
+}
+
+#controls .help {
+  padding-left: 30px;
+  max-width: 240px;
+}
+
+label, input, textarea, button {
+  display: block;
+}
+
+input, textarea {
+  width: 100%;
+}
+
+textarea {
+  padding: 5px;
+}
+
+input, textarea {
+  margin-bottom: 10px;
+}
+
+button {
+  margin-top: 10px;
+}
+</style>
+
+<div id="info"></div>
+
+<div id="controls">
+  <form name="sendEmailForm" onsubmit="send(event)">
+    <label>Email address</label>
+    <input name="email" type="email">
+
+    <label>Subject</label>
+    <input name="subject" type="text">
+
+    <label>Extra message</label>
+    <textarea name="message"></textarea>
+
+    <button type="submit">Send email</button>
+  </form>
+  <div class="help">
+    <p>You can send these instructions to somebody by email.</p>
+    <p>If you write an extra message it'll be included at the top of the email.</p>
+  </div>
+</div>
+
+<script>
+
+  function updateStatus(text) {
+    const el = document.getElementById('info')
+    el.style.display = 'block';
+    el.innerHTML = text;
+  }
+
+  function hideControls() {
+    document.getElementById('controls').style.display = 'none';
+  }
+
+  function send(event) {
+    event.preventDefault();
+    const form = document.forms.sendEmailForm;
+    hideControls();
+    updateStatus('Sending...');
+    google.script.run
+      .withSuccessHandler(onSuccess)
+      .withFailureHandler(onFailure)
+      .sendEmail({
+        email: form.elements.email.value,
+        subject: form.elements.subject.value,
+        message: form.elements.message.value
+      });
+  }
+
+  function onSuccess() {
+    updateStatus('Success!');
+  }
+
+  function onFailure(error) {
+    updateStatus('Error: ' + error.message);
+  }
+</script>
+
+<div>
+  <?!= instructionsHtml ?>
+</div>

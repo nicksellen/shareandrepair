@@ -1,0 +1,33 @@
+<style>
+  * {
+    font-family: arial;
+  }
+</style>
+
+<? if (message) { ?>
+  <p><?= message ?></p>
+  <br>
+<? } ?>
+
+<? for (const entry of entries) { ?>
+  <?= entry.pickUpOrDropOff ?>
+  <strong><?= entry.item ?></strong>
+  <em><?= entry.loTRepairDonationOrOther ?></em>
+  <? if (entry.itemCode) { ?>
+    <code><?= entry.itemCode ?></code>
+  <? } ?>
+  <br>
+
+  <?= entry.address ?>, <?= entry.postCode ?><br>
+
+  <?= entry.customerRepairerName ?>
+  <? if (entry.number) { ?>
+    / <a href="tel:<?= entry.number ?>"><?= entry.number ?></a>
+  <? } ?>
+  <br>
+
+  <? if (entry.deliveryNotes) { ?>
+    <em><?= entry.deliveryNotes ?></em><br>
+  <? } ?>  
+  <br>
+<? } ?>

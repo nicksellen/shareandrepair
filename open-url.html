@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=https://google.com">
+  </noscript>
+  </head>
+  <body>
+    <script>
+      var url = <?= url ?>;
+      var newWin = window.open(url, "_blank");
+      if (!newWin || newWin.closed || typeof newWin.closed == 'undefined'){ 
+        document.getElementById("message").innerHTML = 'blocked';
+      } else {
+        google.script.host.close();
+      }      
+    </script>
+  </body>
+</html>  
